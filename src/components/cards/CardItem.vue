@@ -27,7 +27,7 @@
 			<h3 v-if="showArchived">{{ card.title }}</h3>
 			<h3 v-else @click.stop="startEditing(card)">{{ card.title }}</h3>
 			<transition name="fade" mode="out-in">
-				<form v-if="editing">
+				<form v-if="editing" v-click-outside="cancelEdit">
 					<input v-model="copiedCard.title" type="text" autofocus>
 					<input type="button" class="icon-confirm" @click="finishedEdit(card)">
 				</form>
@@ -122,6 +122,9 @@ export default {
 			if (this.copiedCard.title !== card.title) {
 				this.$store.dispatch('updateCard', this.copiedCard)
 			}
+			this.editing = false
+		},
+		cancelEdit() {
 			this.editing = false
 		},
 		deleteCard() {
